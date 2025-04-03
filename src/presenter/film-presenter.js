@@ -1,4 +1,4 @@
-import { render } from '../framework/render.js';
+import { render, replace, remove } from '../framework/render.js';
 import FilmCardView from '../view/film-card-view.js';
 
 export default class FilmPersenter {
@@ -17,14 +17,31 @@ export default class FilmPersenter {
 
   init = (film) => {
     this.#film = film;
+
+    const prevFilmCardComponent = this.#filmCardComponent;
+
     this.#filmCardComponent = new FilmCardView(film);
+
     this.#filmCardComponent.setFilmClickHandler(() => this.#clickCardHandler(film));
     this.#filmCardComponent.setWatchListClickHandler(this.#watchListBtnClickHandler);
+    this.#filmCardComponent.setWatchedClickHandler(this.#watchedBtnClickHandler);
+    this.#filmCardComponent.setFavoriteClickHandler(this.#favoriteBtnClickHandler);
 
-    render(this.#filmCardComponent, this.#container.element);
+    if (prevFilmCardComponent === null) {
+      render(this.#filmCardComponent, this.#container.element);
+      return;
+    }
+
+    if (this.#container.element.contains(prevFilmCardComponent.element)) {
+      replace(this.#filmCardComponent, prevFilmCardComponent);
+    }
+
+    remove(prevFilmCardComponent);
   };
 
-  destroy = () => { };
+  destroy = () => {
+    remove(this.#filmCardComponent);
+  };
 
   #watchListBtnClickHandler = () => {
     this.#changeData({
@@ -34,6 +51,7 @@ export default class FilmPersenter {
         watchlist: !this.#film.userDetails.watchlist
       },
     });
+    //console.log(this.#film.userDetails.watchlist);
   };
 
   #watchedBtnClickHandler = () => {
