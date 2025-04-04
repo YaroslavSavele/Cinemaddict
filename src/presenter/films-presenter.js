@@ -8,7 +8,7 @@ import FilmListEpmtyView from '../view/film-list-empty-view.js';
 import FilmListContainerView from '../view/film-list-container-view.js';
 import { updateItem } from '../utils/common.js';
 import FilmButtonMoreView from '../view/film-button-more-view.js';
-import FilmDetailsView from '../view/film-details-view.js';
+import FilmDetailsPresenter from './film-details-presenter.js';
 import FooterStatisticsView from '../view/footer-statistics-view.js';
 import { FILM_COUNT_PER_STEP } from '../mock/const.js';
 import FilmPersenter from './film-presenter.js';
@@ -28,8 +28,9 @@ export default class FilmsPresenter {
   #filmsModel = null;
   #commentsModel = null;
   #films = [];
-  #filmDetailsComponent = null;
+  #filmDetailsPresenter = null;
   #filmPresenter = new Map();
+  #selectedFilm = null;
 
   #renderFilm(film, container) {
     const filmPresenter = new FilmPersenter(
@@ -47,14 +48,17 @@ export default class FilmsPresenter {
     document.addEventListener('keydown', this.#onEscKeyDown);
   };
 
-  #renderFilmDetails(film) {
-    const comments = [...this.#commentsModel.get(film)];
+  #renderFilmDetails() {
+    const comments = [...this.#commentsModel.get(this.#selectedFilm)];
 
-    this.#filmDetailsComponent = new FilmDetailsView(film, comments);
+    this.#filmDetailsPresenter = new FilmDetailsPresenter(
+      this.#container.parentNode,
+      this.#filmCangeHandler,
+      this.#removeFilmDetailsComponent,
+      this.#onEscKeyDown
+    );
 
-    this.#filmDetailsComponent.setButtonCloseClickHandler(() => this.#closeButtonFilmDetailsClickHandler());
-
-    render(this.#filmDetailsComponent, this.#container.parentElement);
+    this.#filmDetailsPresenter.init(this.#selectedFilm, comments);
   }
 
   #closeButtonFilmDetailsClickHandler = () => {
@@ -63,13 +67,14 @@ export default class FilmsPresenter {
   };
 
   #addFilmDetailsComponent = (film) => {
-    this.#renderFilmDetails(film);
+    this.#selectedFilm = film;
+    this.#renderFilmDetails();
     document.body.classList.add('hide-overflow');
   };
 
   #removeFilmDetailsComponent = () => {
-    this.#filmDetailsComponent.element.remove();
-    this.#filmDetailsComponent = null;
+    this.#filmDetailsPresenter.destroy();
+    this.#filmDetailsPresenter = null;
     document.body.classList.remove('hide-overflow');
   };
 

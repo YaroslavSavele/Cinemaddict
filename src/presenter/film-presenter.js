@@ -51,7 +51,6 @@ export default class FilmPersenter {
         watchlist: !this.#film.userDetails.watchlist
       },
     });
-    //console.log(this.#film.userDetails.watchlist);
   };
 
   #watchedBtnClickHandler = () => {
