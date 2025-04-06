@@ -12,11 +12,12 @@ import FilmDetailsPresenter from './film-details-presenter.js';
 import FooterStatisticsView from '../view/footer-statistics-view.js';
 import { FILM_COUNT_PER_STEP } from '../mock/const.js';
 import FilmPersenter from './film-presenter.js';
+import { SortType } from '../const.js';
 
 export default class FilmsPresenter {
   #headerProfileComponent = null;
   #filterComponent = null;
-  #sortComponent = new SortView();
+
   #filmsComponent = new FilmsView();
   #filmListComponent = new FilmListView();
   #filmListContainerComponent = new FilmListContainerView();
@@ -31,6 +32,8 @@ export default class FilmsPresenter {
   #filmDetailsPresenter = null;
   #filmPresenter = new Map();
   #selectedFilm = null;
+  #curentSortType = SortType.DEFAULT;
+  #sortComponent = new SortView(this.#curentSortType);
 
   #renderFilm(film, container) {
     const filmPresenter = new FilmPersenter(
@@ -51,13 +54,14 @@ export default class FilmsPresenter {
   #renderFilmDetails() {
     const comments = [...this.#commentsModel.get(this.#selectedFilm)];
 
-    this.#filmDetailsPresenter = new FilmDetailsPresenter(
-      this.#container.parentNode,
-      this.#filmCangeHandler,
-      this.#removeFilmDetailsComponent,
-      this.#onEscKeyDown
-    );
-
+    if (!this.#filmDetailsPresenter) {
+      this.#filmDetailsPresenter = new FilmDetailsPresenter(
+        this.#container.parentNode,
+        this.#filmCangeHandler,
+        this.#removeFilmDetailsComponent,
+        this.#onEscKeyDown
+      );
+    }
     this.#filmDetailsPresenter.init(this.#selectedFilm, comments);
   }
 
@@ -157,5 +161,6 @@ export default class FilmsPresenter {
   #filmCangeHandler = (updatedFilm) => {
     this.#films = updateItem(this.#films, updatedFilm);
     this.#filmPresenter.get(updatedFilm.id).init(updatedFilm);
+    //this.#filmDetailsPresenter.init(updatedFilm, this.#comments);
   };
 }

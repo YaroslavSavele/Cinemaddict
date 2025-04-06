@@ -16,5 +16,11 @@ const FilterType = {
   FAVORITES: 'Favorites'
 };
 
+const SortType = {
+  DEFAULT: 'default',
+  DATE: 'date',
+  RATING: 'rating',
+};
 
-export { UserStatusValue, UserStatusTitle, FilterType };
+
+export { UserStatusValue, UserStatusTitle, FilterType, SortType };

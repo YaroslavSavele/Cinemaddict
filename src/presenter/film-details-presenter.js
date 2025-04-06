@@ -24,10 +24,12 @@ export default class FilmDetailsPresenter {
     const prevFilmDetailsComponent = this.#filmDetailsComponent;
 
     this.#filmDetailsComponent = new FilmDetailsView(this.#film, this.#comments);
+
     this.#filmDetailsComponent.setCloseBtnClickHandler(() => {
       this.#closeBtnClickHandler();
       document.removeEventListener('keydown', this.#escKeyDownHandler);
     });
+
     this.#filmDetailsComponent.setWatchListClickHandler(this.#watchListBtnClickHandler);
     this.#filmDetailsComponent.setWatchedClickHandler(this.#watchedBtnClickHandler);
     this.#filmDetailsComponent.setFavoriteClickHandler(this.#favoriteBtnClickHandler);
@@ -48,6 +50,7 @@ export default class FilmDetailsPresenter {
 
   destroy = () => {
     remove(this.#filmDetailsComponent);
+    //document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
   #watchListBtnClickHandler = () => {
@@ -58,6 +61,8 @@ export default class FilmDetailsPresenter {
         watchlist: !this.#film.userDetails.watchlist
       },
     });
+    //this.destroy();
+    //console.log(this.#film.userDetails)
   };
 
   #watchedBtnClickHandler = () => {
