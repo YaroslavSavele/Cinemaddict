@@ -13,6 +13,7 @@ import FooterStatisticsView from '../view/footer-statistics-view.js';
 import { FILM_COUNT_PER_STEP } from '../mock/const.js';
 import FilmPersenter from './film-presenter.js';
 import { SortType } from '../const.js';
+import { sortFilmsByDate, sortFilmsByRating } from '../utils/film.js';
 
 export default class FilmsPresenter {
   #headerProfileComponent = null;
@@ -32,8 +33,9 @@ export default class FilmsPresenter {
   #filmDetailsPresenter = null;
   #filmPresenter = new Map();
   #selectedFilm = null;
-  #curentSortType = SortType.DEFAULT;
-  #sortComponent = new SortView(this.#curentSortType);
+  #currentSortType = SortType.DEFAULT;
+  #sortComponent = new SortView(this.#currentSortType);
+  #sourcedFilms = [];
 
   #renderFilm(film, container) {
     const filmPresenter = new FilmPersenter(
@@ -130,6 +132,8 @@ export default class FilmsPresenter {
     }
   }
 
+  #clear
+
   #filmButtonMoreClickHandler() {
     this.#films
       .slice(this.#renderedFilmCount, this.#renderedFilmCount + FILM_COUNT_PER_STEP)
@@ -151,7 +155,8 @@ export default class FilmsPresenter {
     this.#commentsModel = commentsModel;
 
     this.#films = [...this.#filmsModel.films];
-    //console.log(generateFilter(this.#films));
+    this.#sourcedFilms = [...this.#filmsModel.films];
+
     this.#renderHeaderUserProfile();
     this.#renderFilter();
     this.#renderFilmBoard();
@@ -160,7 +165,32 @@ export default class FilmsPresenter {
 
   #filmCangeHandler = (updatedFilm) => {
     this.#films = updateItem(this.#films, updatedFilm);
+    this.#sourcedFilms = updateItem(this.#sourcedFilms, updateItem);
     this.#filmPresenter.get(updatedFilm.id).init(updatedFilm);
     //this.#filmDetailsPresenter.init(updatedFilm, this.#comments);
   };
+
+  #sortFilms = (sortType) => {
+    switch (sortType) {
+      case SortType.DATE:
+        this.#films.sort(sortFilmsByDate);
+        break;
+      case SortType.RATING:
+        this.#films.sort(sortFilmsByRating);
+        break;
+      default:
+        this.#films = [...this.#sourcedFilms];
+    }
+
+    this.#currentSortType = sortType;
+  };
+
+  #sortTypeChangeHandler = (sortType) => {
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+
+    this.#sortFilms(sortType);
+    //this.#clearFilmList();
+  }
 }
