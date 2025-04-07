@@ -1,4 +1,4 @@
-import { render, RenderPosition } from '../framework/render.js';
+import { remove, render, RenderPosition } from '../framework/render.js';
 import HeaderProfileView from '../view/header-profile-view.js';
 import FilterView from '../view/filter-view.js';
 import SortView from '../view/sort-view.js';
@@ -122,9 +122,7 @@ export default class FilmsPresenter {
     render(this.#filmListContainerComponent, this.#filmListComponent.element);
 
 
-    this.#films
-      .slice(0, Math.min(this.#films.length, FILM_COUNT_PER_STEP))
-      .forEach((film) => this.#renderFilm(film, this.#filmListContainerComponent));
+    this.#renderFilmList();
 
     if (this.#films.length > FILM_COUNT_PER_STEP) {
       render(this.#filmButtonMoreComponent, this.#filmListComponent.element);
@@ -132,7 +130,18 @@ export default class FilmsPresenter {
     }
   }
 
-  #clear
+  #renderFilmList = () => {
+    this.#films
+      .slice(0, Math.min(this.#films.length, FILM_COUNT_PER_STEP))
+      .forEach((film) => this.#renderFilm(film, this.#filmListContainerComponent));
+  };
+
+  #clearFilmList = () => {
+    this.#filmPresenter.forEach((presenter) => presenter.destroy());
+    this.#filmPresenter.clear();
+    this.#renderedFilmCount = FILM_COUNT_PER_STEP;
+    remove(this.#filmButtonMoreComponent);
+  };
 
   #filmButtonMoreClickHandler() {
     this.#films
@@ -191,6 +200,7 @@ export default class FilmsPresenter {
     }
 
     this.#sortFilms(sortType);
-    //this.#clearFilmList();
+    this.#clearFilmList();
+    //console.log(this.#films)
   }
 }
