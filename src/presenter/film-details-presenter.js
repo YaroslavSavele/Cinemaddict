@@ -60,9 +60,6 @@ export default class FilmDetailsPresenter {
         watchlist: !this.#film.userDetails.watchlist
       },
     });
-
-    //console.log(this.#film.userDetails.watchlist)
-    this.destroy();
   };
 
   #watchedBtnClickHandler = () => {

@@ -1,4 +1,4 @@
-import { remove, render, RenderPosition, replace } from '../framework/render.js';
+import { render, RenderPosition, replace } from '../framework/render.js';
 import HeaderProfileView from '../view/header-profile-view.js';
 import FilterView from '../view/filter-view.js';
 import SortView from '../view/sort-view.js';
@@ -59,7 +59,7 @@ export default class FilmsPresenter {
     if (!this.#filmDetailsPresenter) {
       this.#filmDetailsPresenter = new FilmDetailsPresenter(
         this.#container.parentNode,
-        this.#filmCangeHandler,
+        this.#filmDetaisCangeHandler,
         this.#removeFilmDetailsComponent,
         this.#onEscKeyDown
       );
@@ -198,8 +198,14 @@ export default class FilmsPresenter {
     this.#films = updateItem(this.#films, updatedFilm);
     this.#sourcedFilms = updateItem(this.#sourcedFilms, updateItem);
     this.#filmPresenter.get(updatedFilm.id).init(updatedFilm);
-    //const comments = [...this.#commentsModel.get(updatedFilm)];
-    //this.#filmDetailsPresenter.init(updatedFilm, comments);
+  };
+
+  #filmDetaisCangeHandler = (updatedFilm) => {
+    this.#films = updateItem(this.#films, updatedFilm);
+    this.#sourcedFilms = updateItem(this.#sourcedFilms, updateItem);
+    this.#filmPresenter.get(updatedFilm.id).init(updatedFilm);
+    this.#removeFilmDetailsComponent();
+    this.#addFilmDetailsComponent(updatedFilm);
   };
 
   #sortFilms = (sortType) => {
