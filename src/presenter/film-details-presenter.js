@@ -35,7 +35,6 @@ export default class FilmDetailsPresenter {
     this.#filmDetailsComponent.setFavoriteClickHandler(this.#favoriteBtnClickHandler);
 
     if (prevFilmDetailsComponent === null) {
-      //console.log('hello')
       render(this.#filmDetailsComponent, this.#container);
       return;
     }
@@ -50,7 +49,7 @@ export default class FilmDetailsPresenter {
 
   destroy = () => {
     remove(this.#filmDetailsComponent);
-    //document.removeEventListener('keydown', this.#escKeyDownHandler);
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
   #watchListBtnClickHandler = () => {
@@ -61,8 +60,9 @@ export default class FilmDetailsPresenter {
         watchlist: !this.#film.userDetails.watchlist
       },
     });
-    //this.destroy();
-    //console.log(this.#film.userDetails)
+
+    //console.log(this.#film.userDetails.watchlist)
+    this.destroy();
   };
 
   #watchedBtnClickHandler = () => {

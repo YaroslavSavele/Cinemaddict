@@ -7,7 +7,7 @@ const createSortTemplate = (activeSortType) => (
       <a
         href="#"
         class="sort__button ${(activeSortType === SortType.DEFAULT) ? 'sort__button--active' : ''}"
-        data-sotr-type="${SortType.DEFAULT}"
+        data-sort-type="${SortType.DEFAULT}"
       >
         Sort by default
       </a>
@@ -16,7 +16,7 @@ const createSortTemplate = (activeSortType) => (
       <a
         href="#"
         class="sort__button ${(activeSortType === SortType.DATE) ? 'sort__button--active' : ''}"
-        data-sotr-type="${SortType.DATE}"
+        data-sort-type="${SortType.DATE}"
       >
         Sort by date
       </a>
@@ -25,7 +25,7 @@ const createSortTemplate = (activeSortType) => (
       <a
         href="#"
         class="sort__button ${(activeSortType === SortType.RATING) ? 'sort__button--active' : ''}"
-        data-sotr-type="${SortType.RATING}"
+        data-sort-type="${SortType.RATING}"
       >
         Sort by rating
       </a>
@@ -56,6 +56,6 @@ export default class SortView extends AbstractView {
     }
 
     evt.preventDefault();
-    this._callback.setSortTypeChangeHandler(evt.target.dataset.SortType);
-  }
+    this._callback.sortTypeChange(evt.target.dataset.sortType);
+  };
 }
