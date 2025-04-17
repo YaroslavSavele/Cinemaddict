@@ -9,8 +9,7 @@ const createGenresTemplate = (genres) => {
   return template;
 };
 
-const createFilmDetailsInfoTemplate = (film) => {
-  const { filmInfo } = film;
+const createFilmDetailsInfoTemplate = (filmInfo) => {
   const {
     title, alternativeTitle, totalRating, poster,
     ageRating, director, writers, actors, release,

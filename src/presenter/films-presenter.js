@@ -60,7 +60,7 @@ export default class FilmsPresenter {
       this.#filmDetailsPresenter = new FilmDetailsPresenter(
         this.#container.parentNode,
         this.#filmDetaisCangeHandler,
-        this.#removeFilmDetailsComponent,
+        this.#closeButtonFilmDetailsClickHandler,
         this.#onEscKeyDown
       );
     }
@@ -204,8 +204,8 @@ export default class FilmsPresenter {
     this.#films = updateItem(this.#films, updatedFilm);
     this.#sourcedFilms = updateItem(this.#sourcedFilms, updateItem);
     this.#filmPresenter.get(updatedFilm.id).init(updatedFilm);
-    this.#removeFilmDetailsComponent();
-    this.#addFilmDetailsComponent(updatedFilm);
+    //this.#removeFilmDetailsComponent();
+    //this.#addFilmDetailsComponent(updatedFilm);
   };
 
   #sortFilms = (sortType) => {

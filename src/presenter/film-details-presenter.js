@@ -49,7 +49,7 @@ export default class FilmDetailsPresenter {
 
   destroy = () => {
     remove(this.#filmDetailsComponent);
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
+    //document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
   #watchListBtnClickHandler = () => {
