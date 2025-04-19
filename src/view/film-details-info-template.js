@@ -1,4 +1,4 @@
-import { formatMinutesToTime, humanizeDate } from '../utils.js';
+import { formatMinutesToTime, formatStringToDate } from '../utils.js';
 
 const createGenresTemplate = (genres) => {
   let template = '';
@@ -50,7 +50,7 @@ const createFilmDetailsInfoTemplate = (filmInfo) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">${humanizeDate(release.date)}</td>
+              <td class="film-details__cell">${formatStringToDate(release.date)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>

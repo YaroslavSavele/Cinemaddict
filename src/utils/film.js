@@ -1,5 +1,7 @@
+import dayjs from 'dayjs';
+
 const sortFilmsByDate = (filmA, filmB) =>
-  new Date(filmB.filmInfo.release.date) - new Date(filmA.filmInfo.release.date);
+  dayjs(filmB.filmInfo.release.date).diff(dayjs(filmA.filmInfo.release.date));
 
 const sortFilmsByRating = (filmA, filmB) =>
   filmB.filmInfo.totalRating - filmA.filmInfo.totalRating;
