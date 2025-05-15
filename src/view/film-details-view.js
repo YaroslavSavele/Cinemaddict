@@ -44,6 +44,10 @@ export default class FilmDetailsView extends AbstractStatefulView {
     scrollPosition
   });
 
+  //static parseStateToFilm = (state) => {
+  //  const film = { ...state };
+
+  //};
 
   setCloseBtnClickHandler = (callback) => {
     this._callback.click = callback;
@@ -101,19 +105,28 @@ export default class FilmDetailsView extends AbstractStatefulView {
     this.element.scrollTo(0, this._state.scrollPosition);
   };
 
+  setDeleteCommentClickHandler = (callbak) => {
+    this._callback.commentDeleteClick = callbak;
+    const buttonsDelete = this.element.querySelectorAll('.film-details__comment-delete');
+    buttonsDelete.forEach((button) => button.addEventListener('click', this.#commentDeleteClickHandler));
+  };
+
+  #commentDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    const deletedCommentId = evt.target.dataset.commentId;
+    const scrollPosition = this.element.scrollTop;
+
+    this._callback.commentDeleteClick(deletedCommentId, scrollPosition);
+
+  };
+
   #setInnerHandlers = () => {
     this.element
       .querySelectorAll('.film-details__emoji-label')
       .forEach((element) => {
         element.addEventListener('click', this.#emotionClickHandler);
       });
-    //this.element
-    //  .querySelectorAll('.film-details__emoji-item')
-    //  .forEach((element) => {
-    //    element.addEventListener('click', (evt) => {
-    //      console.log('hello');
-    //    } );
-    //  });
+
     this.element
       .querySelector('.film-details__comment-input')
       .addEventListener('input', this.#commentInputChangeHandler);
@@ -126,12 +139,23 @@ export default class FilmDetailsView extends AbstractStatefulView {
       scrollPosition: this.element.scrollTop
     });
     this.element.scrollTo(0, this._state.scrollPosition);
-    //console.log(this._state.checkedEmotion)
   };
 
   #commentInputChangeHandler = (evt) => {
     evt.preventDefault();
     this._setState({ comment: evt.target.value });
+  };
+
+  setCommentData = () => {
+
+    const viewData = {
+      emotion: this._state.checkedEmotion,
+      comment: this._state.comment,
+      scrollPosition: this.element.scrollTop
+    };
+
+    return viewData;
+
   };
 
   _restoreHandlers = () => {
@@ -140,6 +164,8 @@ export default class FilmDetailsView extends AbstractStatefulView {
     this.setWatchListClickHandler(this._callback.watchListClick);
     this.setWatchedClickHandler(this._callback.watchedClick);
     this.setFavoriteClickHandler(this._callback.favoriteClick);
+    this.setDeleteCommentClickHandler(this._callback.commentDeleteClick);
+    this.setCommentData();
   };
 
 }

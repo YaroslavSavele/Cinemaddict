@@ -1,8 +1,8 @@
 import FilmsPresenter from './presenter/films-presenter.js';
 import FilmsModel from './model/films-model.js';
 import CommentsModel from './model/comments-model.js';
-//import { generateFilms } from './mock/film.js';
-//import { generateComments } from './mock/comment.js';
+import FilterModel from './model/filter-model.js';
+import FilterPresenter from './presenter/filter-presenter.js';
 
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
@@ -14,10 +14,13 @@ const footerStatisticsElement = document.querySelector('.footer__statistics');
 
 const filmsModel = new FilmsModel();
 const commentsModel = new CommentsModel(filmsModel);
+const filterModel = new FilterModel();
 
-const filmsPresenter = new FilmsPresenter();
+const filterPresenter = new FilterPresenter(siteMainElement, filmsModel, filterModel);
+const filmsPresenter = new FilmsPresenter(siteHeaderElement, siteMainElement, footerStatisticsElement, filmsModel, commentsModel, filterModel);
 
-filmsPresenter.init(siteHeaderElement, siteMainElement, filmsModel, commentsModel, footerStatisticsElement);
+filterPresenter.init();
+filmsPresenter.init();
 
 //const films = generateFilms();
 //const comments = generateComments(films);
